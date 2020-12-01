@@ -17,10 +17,9 @@ export default function Login( { csrfToken} ) {
   useEffect(() => router.query.error && setError(true), [router.query.error])
   
   const onSubmit = (data) => {
-    console.log('submit', data)
     if (data.email && data.password && data.csrfToken) {
       const callback = router.query.callbackUrl || ''
-      // signIn('credentials', { email: data.email, password: data.password, callbackUrl: callback })
+      signIn('credentials', { email: data.email, password: data.password, callbackUrl: callback })
     }
   }
   
@@ -77,8 +76,6 @@ export default function Login( { csrfToken} ) {
 }
 
 export async function getServerSideProps(context) {
-  const token = await csrfToken(context)
-  console.log('token', token)
   return {
     props: { csrfToken: await csrfToken(context) }
   }
