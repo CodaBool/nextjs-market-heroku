@@ -7,12 +7,21 @@ const app = next({ dev })
 const handle = app.getRequestHandler()
 const port = process.env.PORT || 3000
 
+
+
 app.prepare().then(() => {
   createServer((req, res) => {
     // Be sure to pass `true` as the second argument to `url.parse`.
     // This tells it to parse the query portion of the URL.
     const parsedUrl = parse(req.url, true)
     const { pathname, query } = parsedUrl
+
+    // app.get('/loaderio-05516d3e95d9412ddfb699183d39df83/', (req, res) => {
+    // })
+
+    // if (pathname === '/loaderio-05516d3e95d9412ddfb699183d39df83') {
+    //   res.send('loaderio-05516d3e95d9412ddfb699183d39df83')
+    // }
 
     if (pathname === '/a') {
       app.render(req, res, '/a', query)
