@@ -10,6 +10,7 @@ export const MAX_ITEMS = 200
 export const PRODUCTS_PER_PAGE = 10
 export const SHIPPING_COST = 7.99
 export const SHIPPING_EST = '2-4 Business Days'
+export const BASE_URL = process.env.NEXTAUTH_URL || 'http://localhost:3000'
 export const CATEGORY = ['Apparel', 'Electronic', 'Home', 'Grocery', 'Health', 'Toys', 'Handmade', 'Sports', 'Outdoors']
 
 export const USA_STATES = [

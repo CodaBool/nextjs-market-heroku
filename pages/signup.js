@@ -28,10 +28,10 @@ export default function Signup() {
 
   const onSubmit = (data) => {
     const token = captcha.current.getValue()
-    if (true) { // TODO: reset this 
-    // if (token !== "") {
+    // if (true) { // TODO: reset this 
+    if (token !== "") {
       bcrypt.hash(data.password, 10, function(err, hash) {
-        axios.post('/api/st/createCustomer', {
+        axios.post('/api/st/postCustomer', {
           email: data.email,
           name: data.firstName + ' ' + data.lastName,
           token: token,
@@ -46,16 +46,14 @@ export default function Signup() {
           }
         })
           .then(res => {
-            // setSuccess(true)
-            // signIn('credentials', { email: res.data.email, password: res.data.password, callbackUrl: '' })
+            setSuccess(true)
+            signIn('credentials', { email: res.data.email, password: res.data.password, callbackUrl: '' })
           })
           .catch(err => {
-            console.log(err)
-            if (err.response) console.log(err.response.data)
-            if (err.response.data === 'Duplicate Email') {
+            if (err.response.data === 'Duplicate Stripe Email' || err.response.data === 'Cannot Create PG User') {
               setShow(true)
-            } else if(err.response.data === 'Captcha Invalid') {
-              console.log('Captcha Error')
+            } else {
+              console.log(err.response.data)
             }
           })
           .finally(

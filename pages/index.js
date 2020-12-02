@@ -9,10 +9,10 @@ export default function Index() {
   }, [])
 
   function makeRequest() {
-    console.log('request sent')
-    axios.post('/api/pg/test', {data: 'nice'})
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
+    // console.log('request sent')
+    // axios.post('/api/other/test', {data: 'nice'})
+    //   .then(res => console.log('my response', res.data))
+    //   .catch(err => console.log(err.response.data))
   }
   return (
     <>
