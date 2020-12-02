@@ -1,7 +1,7 @@
 const stripe = require('stripe')(process.env.STRIPE_SK)
-import { axios } from '../../../constants'
-import { setCookie } from 'nookies'
 import { getCustomer } from '../../../lib/helper'
+import axios from 'axios'
+import createUser from '../pg/createUser'
 
 export default async function (req, res) {
   try {
@@ -9,15 +9,18 @@ export default async function (req, res) {
     const valid = await verify(body.token)
     delete body.token
     if (valid) {
-      const customer = await getCustomer(null, body.email.toLowerCase(), true) // will return undefined if error occurs
+      const customer = await getCustomer(null, body.email.toLowerCase(), false) // will return undefined if error occurs
       if (!customer) {
-        await stripe.customers.create(body)
-          .then(r => {
-            res.status(200).json({password: r.metadata.password, email: r.email, id: r.id})
-          })
-          .catch(err => {
-            res.status(500).send('Cannot Create Customer')
-          })
+        const customer = await stripe.customers.create(body)
+        if (customer) { // create a customer on pg
+          console.log('sending body', body)
+          const user = await axios.post('/api/pg/createUser', body)
+          console.log('got user obj back', user)
+
+          res.status(200).json({password: r.metadata.password, email: r.email, id: r.id})
+        } else {
+          res.status(500).send('Cannot Create Customer')
+        }
       } else {
         res.status(500).send('Duplicate Email')
       }

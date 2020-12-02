@@ -5,9 +5,7 @@ const next = require('next')
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
-const port = process.env.PORT || 3000
-
-
+const port = process.env.PORT || 3000 // added for heroku deploy to work
 
 app.prepare().then(() => {
   createServer((req, res) => {
@@ -16,13 +14,6 @@ app.prepare().then(() => {
     const parsedUrl = parse(req.url, true)
     const { pathname, query } = parsedUrl
 
-    // app.get('/loaderio-05516d3e95d9412ddfb699183d39df83/', (req, res) => {
-    // })
-
-    // if (pathname === '/loaderio-05516d3e95d9412ddfb699183d39df83') {
-    //   res.send('loaderio-05516d3e95d9412ddfb699183d39df83')
-    // }
-
     if (pathname === '/a') {
       app.render(req, res, '/a', query)
     } else if (pathname === '/b') {
@@ -30,7 +21,7 @@ app.prepare().then(() => {
     } else {
       handle(req, res, parsedUrl)
     }
-  }).listen(port, (err) => {
+  }).listen(port, (err) => { // replace with heroku port variable
     if (err) throw err
     console.log(`> Ready on port:${port}`)
   })

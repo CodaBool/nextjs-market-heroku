@@ -1,4 +1,4 @@
-import { getCustomer } from '../auth/[...nextauth]'
+import { getCustomer } from '../../../lib/helper'
 
 export default async function (req, res) {
   const customer = await getCustomer(req.query.id, req.query.email, true) // will use id if defined or will use email from session as backup

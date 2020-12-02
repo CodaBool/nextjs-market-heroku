@@ -28,9 +28,10 @@ export default function Signup() {
 
   const onSubmit = (data) => {
     const token = captcha.current.getValue()
-    if (token !== "") {
+    if (true) { // TODO: reset this 
+    // if (token !== "") {
       bcrypt.hash(data.password, 10, function(err, hash) {
-        axios.post('/api/stripe/createCustomer', {
+        axios.post('/api/st/createCustomer', {
           email: data.email,
           name: data.firstName + ' ' + data.lastName,
           token: token,
@@ -45,8 +46,8 @@ export default function Signup() {
           }
         })
           .then(res => {
-            setSuccess(true)
-            signIn('credentials', { email: res.data.email, password: res.data.password, callbackUrl: '' })
+            // setSuccess(true)
+            // signIn('credentials', { email: res.data.email, password: res.data.password, callbackUrl: '' })
           })
           .catch(err => {
             console.log(err)

@@ -1,5 +1,5 @@
 import { getId } from '../../../../constants'
-import { getCustomer } from '../../auth/[...nextauth]'
+import { getCustomer } from '../../../../lib/helper'
 
 export default async function isAdmin(req) {
   const id = getId({req})

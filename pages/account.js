@@ -7,14 +7,11 @@ import { Load, isLoad } from '../components/Load'
 import { getEmail, getId } from '../constants'
 import { format } from 'timeago.js'
 import { axios } from '../constants'
-import { getCustomer } from './api/auth/[...nextauth]'
+import { idFromReqOrCtx } from '../lib/helper'
 
 export async function getServerSideProps(context) {
   let customer = { err: null }
-  const id = getId(context)
-  const email = getEmail(context)
-
-  const result = await getCustomer(id, email, true) // will use id if defined or will use email from session as backup
+  const id = await idFromReqOrCtx(null, context) // will use id if defined or will use email from session as backup
   if (customer) {
     customer = result
   } else {
@@ -26,6 +23,8 @@ export async function getServerSideProps(context) {
 
 export default function Account({ customer }) {
   const [session, loading] = useSession()
+
+  console.log('session', session)
   if (isLoad(session, loading, false)) return <Load />
 
   return (

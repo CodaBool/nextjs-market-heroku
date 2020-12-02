@@ -13,7 +13,7 @@ import { useShoppingCart } from 'use-shopping-cart'
 import useScreen from '../../components/useScreen'
 import { Load, isLoad } from '../../components/Load'
 import { parseCookies } from 'nookies'
-import { getCustomer } from '../api/auth/[...nextauth]'
+import { getCustomer } from '../../lib/helper'
 
 export default function CheckoutPage({ shipping, customer }) {
   const { cartDetails, formattedTotalPrice, totalPrice } = useShoppingCart()

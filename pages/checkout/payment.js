@@ -17,7 +17,7 @@ import { axios, SHIPPING_COST, SHIPPING_EST, getEmail, getId } from '../../const
 import { useRouter } from 'next/router'
 import useScreen from '../../components/useScreen'
 import { Load, isLoad } from '../../components/Load'
-import { getCustomer } from '../api/auth/[...nextauth]'
+import { getCustomer } from '../../lib/helper'
 
 export async function getServerSideProps(context) {
 
