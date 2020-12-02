@@ -10,7 +10,7 @@ export default async function (req, res) {
     if (result.err) {
       res.status(500).send(result.err)
     } else {
-      res.status(200).json({result})
+      res.status(200).json({result: result.rowCount})
     }
   } catch (err) {
     res.status(500).send('General Create User/Customer Error')
