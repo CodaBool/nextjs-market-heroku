@@ -47,7 +47,7 @@ export default function Signup() {
         })
           .then(res => {
             setSuccess(true)
-            signIn('credentials', { email: res.data.email, password: res.data.password, callbackUrl: '' })
+            signIn('credentials', { email: data.email, password: data.password, callbackUrl: '' })
           })
           .catch(err => {
             if (err.response.data === 'Duplicate Stripe Email' || err.response.data === 'Cannot Create PG User') {

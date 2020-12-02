@@ -16,11 +16,10 @@ export default async function (req, res) {
           body.stripe_id = newCustomer.id
           await axios.post(BASE_URL + '/api/pg/postUser', body) // TODO: nextjs mentioned this could be a function instead of promise
             .then(response => {
-              if (response.data.result === 1) { // send back login info for login
-                res.status(200).json({password: body.metadata.password, email: body.email})
-              }
+              res.status(200).json({result: response.data.result})
             })
             .catch(() => { // more info in err.response.data
+              stripe.customers.del(newCustomer.id) // roll back stripe customer creation
               res.status(500).send('Cannot Create PG User')
             })
         } else {
