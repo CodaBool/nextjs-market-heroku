@@ -21,7 +21,7 @@ export default function Cart() {
   var size = useScreen()
   if (!size) size = 'medium'
 
-  if (isLoad(session, loading, true)) return <Load session={session} loading={loading} />
+  if (isLoad(session, loading, false)) return <Load />
 
   return (
     <>

@@ -13,7 +13,7 @@ import { useShoppingCart } from 'use-shopping-cart'
 import useScreen from '../../components/useScreen'
 import { Load, isLoad } from '../../components/Load'
 import { parseCookies } from 'nookies'
-import { getCustomer } from '../../lib/helper'
+import { quickCustomer } from '../../lib/helper'
 
 export default function CheckoutPage({ shipping, customer }) {
   const { cartDetails, formattedTotalPrice, totalPrice } = useShoppingCart()
@@ -71,21 +71,12 @@ export default function CheckoutPage({ shipping, customer }) {
 }
 
 export async function getServerSideProps(context) {
-  let shipping = { err: null }
-  let customer = { err: null }
-  const id = getId(context)
-  const email = getEmail(context)
-
-  const result = await getCustomer(id, email, true) // will use id if defined or will use email from session as backup
-  if (customer) {
-    console.log(result)
-    customer = result
-    if (result.shipping) {
-      shipping = result.shipping
-    }
+  const customer = await quickCustomer(null, context)
+  let shipping
+  if (customer.shipping) {
+    shipping = customer.shipping
   } else {
-    console.log('error getting customer')
+    shipping = { err: 'no shipping info' }
   }
-
   return { props: { shipping, customer } }
 }

@@ -28,7 +28,7 @@ export default function Login( { csrfToken} ) {
     return <Load />
   }
   
-  if (isLoad(session, loading)) return <Load />
+  if (isLoad(session, loading, false)) return <Load />
 
   return (
     <>

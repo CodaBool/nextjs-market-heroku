@@ -84,6 +84,25 @@ export function dateParsed(obj) {
 	return obj
 }
 
+// export function isAdmin(email) {
+//   console.log('isAdmin session', session.user.email)
+//   // check for cookie
+//   // const cookies = parseCookies()
+//   // console.log()
+//   // // create cookie
+//   // setCookie(null, 'id-email', r.id + '-' + r.email, { // store cookie for easy Stripe api use 
+//   //   path: '/',
+//   //   maxAge: 30 * 24 * 60 * 60 * 12 * 5, // 5 years
+//   //   sameSite: 'strict' // use httpOnly: true for added security
+//   // })
+//   // let match = false
+//   process.env.NEXT_PUBLIC_ADMIN_EMAILS.split(',').forEach(adminEmail => {
+//     if (adminEmail === email) {
+//       match = true
+//     }
+//   })
+//   return true
+// }
 export function isAdmin(userEmail) {
   let match = false
   process.env.NEXT_PUBLIC_ADMIN_EMAILS.split(',').forEach(adminEmail => {

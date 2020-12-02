@@ -7,25 +7,19 @@ import { Load, isLoad } from '../components/Load'
 import { getEmail, getId } from '../constants'
 import { format } from 'timeago.js'
 import { axios } from '../constants'
-import { idFromReqOrCtx } from '../lib/helper'
+import { quickCustomer } from '../lib/helper'
 
 export async function getServerSideProps(context) {
-  let customer = { err: null }
-  const id = await idFromReqOrCtx(null, context) // will use id if defined or will use email from session as backup
-  if (customer) {
-    customer = result
-  } else {
-    console.log('error getting customer')
-  }
-  
-  return { props: { customer } }
+  let customer = await quickCustomer(null, context)
+  return { props: { customer }}
 }
 
 export default function Account({ customer }) {
   const [session, loading] = useSession()
 
-  console.log('session', session)
-  if (isLoad(session, loading, false)) return <Load />
+  if (isLoad(session, loading, true)) return <Load />
+
+  console.log('customer', customer)
 
   return (
     <>
@@ -40,8 +34,8 @@ export default function Account({ customer }) {
               <>
                 <p>Welcome, {customer.name}</p>
                 <p>{customer.email}</p>
-                <p>Active: {customer.metadata.active ? 'True' : 'False'}</p>
-                <p>Admin: {customer.metadata.admin ? 'True' : 'False'}</p>
+                <p>Active: {customer.metadata.active}</p>
+                <p>Admin: {customer.metadata.admin}</p>
                 <p>Joined: {format(customer.created * 1000)}</p>
               </>
             }

@@ -26,6 +26,7 @@ export default (req, res) => {
   
         // can use throw new Error('message') to send to err.message catch block 
         authorize: async (clientData) => {
+          console.log('checking session')
           try {
             const customer = await getCustomer(null, clientData.email, false)
             if (customer) {
@@ -46,26 +47,22 @@ export default (req, res) => {
       })
     ],
     callbacks: {
-      session: async (session, user, sessionToken) => {
-        // console.log('session', session)
-        // console.log('user', user)
-        const customer = await getCustomer(null, user.email, true)
-        if (customer) {
-          if (customer.email === user.email) {
-            session.id = customer.id // Add property to session
+      session: async (session, user, sessionToken) => { // ran on every useSession
+        if (!user.id) { // may be unecessary, not sure if this runs ever
+          console.log('go to TODO(1): if you see this message')
+          const customer = await getCustomer(null, user.email, true)
+          if (customer) {
+            if (customer.email === user.email) {
+              session.id = customer.id // Add property to session
+            }
           }
         }
         return Promise.resolve(session)
       },
       jwt: async (token, user, account, profile, isNewUser) => {
-        // console.log('before token', token)
         if (user) {
           token.id = user.id
         }
-        //   console.log('user undefined, ', user)
-        // }
-        // console.log('after token', token)
-        // console.log('unchanged user', user)
         return Promise.resolve(token)
       }
     },

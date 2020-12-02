@@ -42,7 +42,7 @@ export default function ShippingForm({ shipping, size, setLoadMsg, session, cust
   const onSubmit = async (data) => {
     autoFillState(data.postal_code)
     let mismatch = {}
-    let shouldSave = true
+    let skipSave = false
     const shipData = shipping
     shipData.name = session.user.name
     const newAddress = {
@@ -52,8 +52,9 @@ export default function ShippingForm({ shipping, size, setLoadMsg, session, cust
       city: data.city,
       state: data.state
     }
+
     
-    if (shipData.address !== null && shipData.address !== undefined) { // will be undefined if db could not get, null if no record found  
+    if (!shipping.err) { // record found
       if (data.line1.trim().toLowerCase() !== shipData.address.line1.toLowerCase()) {
         mismatch.line1 = data.line1.trim().toLowerCase()
       }
@@ -70,18 +71,24 @@ export default function ShippingForm({ shipping, size, setLoadMsg, session, cust
         mismatch.state = data.state.trim().toLowerCase()
       }
       if (Object.keys(mismatch).length == 0) { // nothing to update
-        shouldSave = false
+        skipSave = true
       }
       setMis(mismatch)
+    } else { // no address for account, save as new
+      delete shipData.err
+      shipData.address = newAddress
+      saveShipping(shipData)
     }
 
-    if (update === null) {
-      if (Object.keys(mismatch).length) {
+    if (update === null) { // has answered modal yet
+      if (Object.keys(mismatch).length) { // ask user with modal about mismatch
         setShow(true)
       } else { // nothing to save
-        saveShipping(null)
+        if (skipSave) { // false when saving as new shipping address or other shipping.err
+          saveShipping(null)
+        }
       }
-    } else {
+    } else { // has answered modal on if should use new address or old one
       if (update) { // save new address
         shipData.address = newAddress
         saveShipping(shipData)

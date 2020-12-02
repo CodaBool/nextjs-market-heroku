@@ -8,7 +8,7 @@ import { Load, isLoad } from '../components/Load'
 export default function Logout() {
   const [session, loading] = useSession()
   
-  if (isLoad(session, loading)) return <Load />
+  if (isLoad(session, loading, true)) return <Load />
 
   return (
     <>

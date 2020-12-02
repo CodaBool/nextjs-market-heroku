@@ -1,6 +1,5 @@
 import Spinner from 'react-bootstrap/Spinner'
 import { signin, signOut } from 'next-auth/client'
-import { parseCookies } from 'nookies'
 
 // WARNING: will display the msg, when redirecting OFF the page too. Not just TO the page.
 export function Load({ msg }) {
@@ -13,9 +12,7 @@ export function Load({ msg }) {
 }
 
 export function isLoad(session, loading, required) {
-  const cookies = parseCookies()
   if (loading) return true
-  if (!cookies['id-email'] && !loading && required && session) signOut() // logout and redo sign in to reset the 
   if (session === null && !loading && required) { signin(); return true }
   return false
 }

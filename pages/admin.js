@@ -36,7 +36,7 @@ export default function admin() {
   useEffect(() => setUid(watch('u-id')), [watch])
   useEffect(() => fillData(uid), [debounce])
 
-  if (isLoad(session, loading)) return <Load />
+  if (isLoad(session, loading, true)) return <Load />
 
   const onUpdateSubmit = (data) => {
     const categories = String(data['u-categories'])

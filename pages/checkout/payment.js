@@ -17,21 +17,10 @@ import { axios, SHIPPING_COST, SHIPPING_EST, getEmail, getId } from '../../const
 import { useRouter } from 'next/router'
 import useScreen from '../../components/useScreen'
 import { Load, isLoad } from '../../components/Load'
-import { getCustomer } from '../../lib/helper'
+import { quickCustomer } from '../../lib/helper'
 
 export async function getServerSideProps(context) {
-
-  let customer = { err: null }
-  const id = getId(context)
-  const email = getEmail(context)
-
-  const result = await getCustomer(id, email, true) // will use id if defined or will use email from session as backup
-  if (customer) {
-    customer = result
-  } else {
-    console.log('error getting customer')
-  }
-
+  const customer = await quickCustomer(null, context)
   return { props: { customer } }
 }
 

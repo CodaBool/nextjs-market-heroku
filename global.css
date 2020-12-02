@@ -177,7 +177,7 @@ InputContainer
   position: absolute;
   top: 0px;
   left: 0px;
-  z-index: 1;
+  z-index: 0.1; /* toast modal is z-index: 1 so this must be below that */
 }
 .box .shine {
   width: 100%;
