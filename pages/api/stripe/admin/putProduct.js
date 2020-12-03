@@ -1,4 +1,5 @@
 const stripe = require('stripe')(process.env.STRIPE_SK)
+// TODO: check authentication strategy
 
 export default async function (req, res) {
   // admin authentication

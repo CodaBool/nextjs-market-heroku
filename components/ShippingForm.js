@@ -101,7 +101,7 @@ export default function ShippingForm({ shipping, size, setLoadMsg, session, cust
   async function saveShipping(shipData) {
     scroll()
     if (shipData) {
-      await axios.post('/api/stripe/saveAddress', {shipData, customer})
+      await axios.post('/api/st/putAddress', {shipData, customer})
         .then(res => console.log(res.data))
         .catch(err => console.log(err.response.data))
     }

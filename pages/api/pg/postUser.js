@@ -4,7 +4,7 @@ export default async function (req, res) {
   try {
     const { body } = req
     const result = await query(
-      'INSERT INTO users(email, stripe_id, name, password, joined, updated) VALUES ($1, $2, $3, $4, $5, $6)', 
+      'INSERT INTO users(email, id, name, password, joined, updated) VALUES ($1, $2, $3, $4, $5, $6)', 
       [body.email.toLowerCase(), body.stripe_id, body.name, body.metadata.password, body.metadata.joined, body.metadata.updated]
     )
     if (result.err) {

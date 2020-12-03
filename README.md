@@ -45,12 +45,13 @@ heroku pg:killall -a e-commerce-draft
 heroku pg:info -a e-commerce-draft
 
 # PSQL
-drop table users CASCADE;
+
+drop table users CASCADE; drop table address CASCADE; drop table orders CASCADE;
 UPDATE users SET admin=true WHERE id=1;
-INSERT INTO users(email, stripe_id, name, password, joined, updated) VALUES ('d@d.com', 'cus_123','dd', 'pass', current_timestamp, current_timestamp);
+INSERT INTO address(stripe_id, name, line1, line2, postal_code, city, country, state, phone) VALUES ('cus_IUzmfGYBDEX81N', 'new around', '1 big meaty', 'claws', '82343', 'ornasd', 'US', 'WY', '');
+INSERT INTO users(email, id, name, password, joined, updated) VALUES ('d@d.com', 'cus_IUzmfGYBDEX81N','dd', 'pass', current_timestamp, current_timestamp);
 create table users (
-   user_id      serial                   not null     ,
-   stripe_id    varchar(255)             not null     ,
+   id    varchar(255)             not null     ,
    email        varchar(255)             not null     ,
    name         varchar(255)             not null     ,
    password     varchar(255)             not null     ,
@@ -59,32 +60,35 @@ create table users (
    joined       timestamp with time zone not null     ,
    updated      timestamp with time zone not null     ,
    UNIQUE(email)                                      ,
-   PRIMARY KEY(user_id)
+   PRIMARY KEY(id)
 );
 create table address (
    address_id  serial                     not null    ,
-   user_id     int                                    ,
+   user_id   varchar(255)               not null    ,
+   name        varchar(255)                           ,
    line1       varchar(255)                           ,
    line2       varchar(255)                           ,
    postal_code int                                    ,
    city        varchar(100)                           ,
    country     varchar(2)                             ,
    state       varchar(2)                             ,
+   phone       varchar(15)                            ,
    PRIMARY KEY(address_id)                            ,
    CONSTRAINT fk_user_address
       FOREIGN KEY (user_id) 
-         REFERENCES users(user_id)
+         REFERENCES users(id)
 );
 create table orders (
    order_id    serial                   not null      ,
    intent_id   varchar(255)             not null      ,
-   user_id     int                                    ,
+   user_id   varchar(255)                           ,
+   amount      int                                    ,
    inserted_at timestamp with time zone not null      ,
    updated_at  timestamp with time zone not null      ,
    PRIMARY KEY(order_id)                              ,
    CONSTRAINT fk_user_orders
-      FOREIGN KEY(user_id) 
-	      REFERENCES users(user_id)
+      FOREIGN KEY (user_id) 
+         REFERENCES users(id)
 );
 
 # Stripe

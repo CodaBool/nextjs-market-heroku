@@ -66,7 +66,7 @@ export default function admin() {
     const metadata = {currency: data['c-currency'], price: data['c-price'], quantity: data['c-quantity'], categories}
     const product = { active: data['c-active'], name: data['c-name'], description: data['c-description'], type: data['c-type'],metadata}
 
-    axios.post('/api/stripe/admin/createProduct', product)
+    axios.post('/api/stripe/admin/putProduct', product)
       .then(res => {
         reset()
         setCreateRes(res.data)
@@ -92,7 +92,7 @@ export default function admin() {
     console.log('bounced | id =', uid)
     if (uid) {
       setLoadProduct(true)
-      axios.get('/api/stripe/getProduct', { params: {id: uid} })
+      axios.get('/api/stripe/admin/getProduct', { params: {id: uid} })
         .then(res => {
           console.log('product', res.data)
           setProduct(res.data)
