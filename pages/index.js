@@ -52,9 +52,6 @@ export default function Index({ general }) {
   return (
     <>
       {/* <button onClick={makeRequest}>Request</button> */}
-      <p>BASE_URL client side from env: {process.env.NEXTAUTH_URL}</p>
-      <p>BASE_URL sever side from constants: {general}</p>
-      <p>BASE_URL client side from constants: {BASE_URL}</p>
       Home Page
     </>
   )

@@ -8,6 +8,7 @@ import { idFromReqOrCtx } from '../lib/helper'
 
 export async function getServerSideProps(context) {
   const id = idFromReqOrCtx(null, context)
+  console.log('id =', id)
   const intents = await axios.get(BASE_URL + '/api/st/getIntents', {params: {id}})
   let error = ''
   if (!intents) {
