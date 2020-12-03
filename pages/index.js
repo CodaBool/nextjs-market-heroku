@@ -2,7 +2,12 @@ import axios from 'axios'
 import {useEffect} from 'react'
 import { useSession } from 'next-auth/client'
 
-export default function Index() {
+export async function getServerSideProps(context) {
+  const envTest = process.env.BASE_URL
+  return { props: { general: envTest }}
+}
+
+export default function Index({ general }) {
   const [ session, loading ] = useSession()
 
   useEffect(() => {
@@ -45,7 +50,9 @@ export default function Index() {
   }
   return (
     <>
-      <button onClick={makeRequest}>Request</button>
+      {/* <button onClick={makeRequest}>Request</button> */}
+      <p>BASE_URL client side: {process.env.BASE_URL}</p>
+      <p>BASE_URL sever side: {general}</p>
       Home Page
     </>
   )
