@@ -12,6 +12,7 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import Accordion from 'react-bootstrap/Accordion'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
+import Modal from 'react-bootstrap/Modal'
 import { Cart3, PencilFill, BoxSeam, Envelope, Receipt, HandIndexThumb, PlusCircle, Plus } from 'react-bootstrap-icons'
 import { axios, SHIPPING_COST, SHIPPING_EST, getEmail, getId } from '../../constants'
 import { useRouter } from 'next/router'
@@ -28,11 +29,13 @@ export default function CheckoutPage({ customer }) {
   const [session, loading] = useSession()
   const [price, setPrice] = useState(-1)
   const [error, setError] = useState('')
+  const [show, setShow] = useState(false)
   const [loadMsg, setLoadMsg] = useState('')
   const router = useRouter()
   const top = useRef(null)
   var size = useScreen()
 
+  useEffect(() => setShow(true), [])
   const scroll = () => top.current && top.current.scrollIntoView()
   
   if (isLoad(session, loading, true)) return <Load />
@@ -40,6 +43,7 @@ export default function CheckoutPage({ customer }) {
   if (!size) size = 'medium'
 
   return (
+    <>
       <Row ref={top}>
         <Col className={`${size.includes('small') ? 'mx-3 p-0 mt-3' : 'border-right pr-5 mt-3'}`} md={6}>
           {loadMsg ? <Load msg={loadMsg} />
@@ -112,7 +116,26 @@ export default function CheckoutPage({ customer }) {
         <Col className={`${size.includes('small') ? 'mx-3 p-0 mt-3' : 'border-left pl-5 mt-3'}`} md={6}>
           <PaymentForm size={size} session={session} customer={customer} setError={setError} setPrice={setPrice} setLoadMsg={setLoadMsg} scroll={scroll}/>
           {error && <p>{error}</p>}
+          <Row>
+            <Button className="w-100 m-3" variant="info" onClick={() => setShow(true)}>Click For Help</Button>
+          </Row>
         </Col>
       </Row>
+
+      {/* Modal informing about test payment info */}
+      <Modal show={show} onHide={() => setShow(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Welcome to the Test Environment!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Card Number = 4242 4242 4242 4242</p>
+          <p>Expiration = 0424</p>
+          <p>CVC = 424</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <p>This is just a test and no actual charges are made. Try making a test payment with the Stripe card info found above.</p>
+        </Modal.Footer>
+      </Modal >
+    </>
   )
 }

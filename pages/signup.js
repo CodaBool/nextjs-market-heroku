@@ -31,7 +31,7 @@ export default function Signup() {
     // if (true) { // TODO: reset this 
     if (token !== "") {
       bcrypt.hash(data.password, 10, function(err, hash) {
-        axios.post('/api/st/postCustomer', {
+        axios.post('/api/stripe/postCustomer', {
           email: data.email,
           name: data.firstName + ' ' + data.lastName,
           token: token,
