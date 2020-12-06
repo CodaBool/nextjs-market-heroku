@@ -1,23 +1,19 @@
 const stripe = require('stripe')(process.env.STRIPE_SK)
-// TODO: check authentication strategy
+import { quickCustomer } from '../../../../lib/helper'
 
 export default async function (req, res) {
-  // admin authentication
-  console.log('session', req.body.session)
-  const isAdmin = await getAdminStatus(req.body.session.user.email)
-  console.log('admin?', isAdmin)
-
-  if (isAdmin) { // admin only endpoint
-    try {
+  const customer = await quickCustomer({req}, null)
+  if (customer) {
+    if (customer.metadata.admin === 'true') {
       let metadata = {} // only update relevant data
-      if (req.body.quantity) {
-        metadata.quantity =  req.body.quantity
-      } if (req.body.price) {
-        metadata.price = req.body.price
-      } if (req.body.currency) {
-        metadata.currency = req.body.currency
-      } if (req.body.categories.length > 0) {
-        metadata.categories = String(req.body.categories)
+      if (req.body.metadata.quantity) {
+        metadata.quantity =  req.body.metadata.quantity
+      } if (req.body.metadata.price) {
+        metadata.price = req.body.metadata.price
+      } if (req.body.metadata.currency) {
+        metadata.currency = req.body.metadata.currency
+      } if (req.body.metadata.categories.length > 0) {
+        metadata.categories = req.body.metadata.categories
       }
 
       let productObj = {}
@@ -30,21 +26,19 @@ export default async function (req, res) {
       } if  (req.body.description) {
         productObj.description = req.body.description
       } 
-
       productObj.metadata = metadata
       productObj.name = req.body.name
 
-      let product
-      try {
-        product = await stripe.products.create(productObj)
-      } catch (err) {
-        console.log('error making product', err.message)
+      const product = await stripe.products.create(productObj)
+      if (product) {
+        res.status(200).json(product)
+      } else {
+        res.status(500).send('Not an admin')
       }
-      res.status(200).json({ error: false, product: product})
-    } catch (err) {
-      res.status(500).json({ statusCode: 500, message: err.message })
+    } else {
+      res.status(500).send('Not an admin')
     }
-  } else { // not an admin account
-    res.status(200).json({error: true })
+  } else {
+    res.status(500).send('Could not gather Stripe Customer')
   }
 }

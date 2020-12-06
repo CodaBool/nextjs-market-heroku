@@ -44,15 +44,15 @@ export default function admin() {
     for (const key in metadata) metadata[key] === '' && delete metadata[key]
     const product = { active: data['u-active'], name: data['u-name'], description: data['u-description'], metadata}
     for (const key in product) product[key] === '' && delete product[key]
-
     axios.post('/api/stripe/admin/updateProduct', {id: data['u-id'], product})
       .then(res => {
+        console.log('return', res.data)
         reset()
         setCreateRes(res.data)
         setShowUpdate(true)
-        console.log('return', res.data)
       })
       .catch(err => {
+        console.log(err.response.data)
         if (err.response.data === 'Not an admin') {
           setShowError(true)
         } else {
@@ -68,12 +68,13 @@ export default function admin() {
 
     axios.post('/api/stripe/admin/putProduct', product)
       .then(res => {
+        console.log('return', res.data)
         reset()
         setCreateRes(res.data)
         setShow(true)
-        console.log('return', res.data)
       })
       .catch(err => {
+        console.log(err.response.data)
         if (err.response.data === 'Not an admin') {
           setShowError(true)
         } else {
