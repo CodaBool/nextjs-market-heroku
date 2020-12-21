@@ -69,7 +69,7 @@ export default (req, res) => {
     pages: {
       signIn: '/login',
       signOut: '/logout',
-      newUser: '/singup',
+      newUser: '/signup',
       error: '/login', // Error code passed in query string as ?error=
     },
     session: {
