@@ -1,6 +1,7 @@
 import Navigation from '../components/Navigation'
 import React from 'react'
 import Container from 'react-bootstrap/Container'
+import NavBox from '../components/UI/NavBox'
 import { Provider } from 'next-auth/client'
 import Head from 'next/head'
 
@@ -35,6 +36,7 @@ export default function MyApp({ Component, pageProps }) {
             </Head>
             <Container>
               <Component {...pageProps} />
+              <NavBox />
             </Container>
           </Elements>
         </CartProvider>

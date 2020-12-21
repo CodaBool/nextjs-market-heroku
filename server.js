@@ -23,6 +23,6 @@ app.prepare().then(() => {
     }
   }).listen(port, (err) => { // replace with heroku port variable
     if (err) throw err
-    console.log(`> Ready on port:${port}`)
+    console.log(`> Ready on port:${port} http://localhost:${port}`)
   })
 })
