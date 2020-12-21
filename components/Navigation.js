@@ -37,7 +37,7 @@ export default function Navigation() {
         </Nav>
         <Nav>
           {session
-            ? 
+            ?
               <>
                 {isAdmin(session.user.email) && 
                   <NavDropdown title="Admin" id="collasible-nav-dropdown" className="mr-2">
